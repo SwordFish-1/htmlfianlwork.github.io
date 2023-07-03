@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+
+<head >
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="mycss.css" >
+    <link rel="shortcut icon" href="picture7.jpg">
+    <title>更多信息</title>
+    <style>
+      h1{
+        color: black;
+        font-size: 40px;
+        text-align: center;
+      }
+      p{
+        color: white;
+        font-size: 30px;
+      }
+        .video{
+            position: relative;
+            width: 700px;
+            height: 45px;
+        }
+         .menu{
+        
+            position: relative;
+            text-align: center;
+            margin: 0 auto;
+        } 
+    
+      .controls{
+        position: absolute;
+        width: 700px;
+        height: 75px;
+        bottom: -75px;
+        z-index: 10;
+        background-color: rgba(255,255,255,0.31);
+        text-align: center;
+        transition: all 0.3s ease-in;
+      }
+      .menu{
+         position: relative;
+        width: 1000px;
+        height: 600px;
+      }
+      .project{
+         width: 700px;
+        height: 450px;
+        margin: 0 auto;
+        border: 1px solid silver; 
+      }
+      .btntime{
+ width: 700px;
+ outline: none;
+      }
+      button{
+        position: relative;
+        width: 40px;
+        height: 20px;
+        outline: none;
+        border-style: none;
+        margin: 18px;
+        color:#474747;
+      }
+      .btntime{
+        width: 1000px;
+        outline: none;
+      }
+      span{
+        color: white;
+      }
+        </style>
+</head>
+
+<body background="picture13.jpg"
+style="background-repeat:no-repeat;
+background-attachment:fixed;
+background-size:cover;
+-webkit-background-size:cover;
+-o-background-size:cover;
+background-position: center 0;
+"> 
+<h1>更多信息</h1>
+<p>了解过了解更多请浏览</p>
+<a href="https://www.bilibili.com/read/cv3904772?from=search&spm_id_from=333.337.0.0">点击此处</a>
+<h2>视频浏览</h2>
+    <div id="project">
+        <div class="menu">
+        
+            <video id="video" src="video.mp4" style=" height: 1000px; width: 800px;"></video>
+            <div id="controls">
+                 <input type="range" id="btntime" value="0" max="100"><br>
+                 <span id="current_time" style='font-size: 12px;'>00:00:00</span>
+                 <button id="btnback">后退</button>
+               
+                <button  id="start">播放</button>
+                <button id="btngo">快进</button>
+            
+              <span id="totaltime"style='font-size:12px;'>00:00:00</span>
+            </div>
+        </div>
+    </div>
+    <script>
+       var video=document.getElementById("video");
+       var btnstart=document.getElementById("start");
+       var current_time=document.getElementById("current_time");
+       var btntime=document.getElementById("btntime");
+       var totaltime=document.getElementById("totaltime");
+       var btngo=document.getElementById("btngo");
+       var btnback=document.getElementById("btnback");
+        video.onplaying=function()//获取时间并显示到总时间上
+        {
+            var allTime=video.duration;
+            var h=Math.floor(allTime/3600);
+            var m=Math.floor(allTime%3600/60);
+            var s=Math.floor(allTime%60);
+            h=h>=10?h:'0'+h;
+            m=m>=10?m:'0'+m;
+            s=s>=10?s:'0'+s;
+            totaltime.innerHTML=h+":"+m+":"+s;
+        }
+        video.ontimeupdate=function(){//更新当前时间
+            btntime.value=100*this.currentTime/this.duration;
+            var time=this.currentTime;
+            var h=Math.floor(time/3600);
+            var m=Math.floor(time%3600/60);
+            var s=Math.floor(time%60);
+            h=h>=10?h:'0'+h;
+            m=m>=10?m:'0'+m;
+            s=s>=10?s:'0'+s;
+            current_time.innerHTML=h+":"+m+":"+s;
+        }
+        btngo.addEventListener("click",function(){
+         
+                video.currentTime+=5;
+           
+        })
+        btnback.addEventListener("click",function(){
+                video.currentTime-=2;
+                if(video.currentTime<=0){
+                    video.play();
+                    clearInterval(time);
+                }
+        })
+        btntime.addEventListener("mousedown",function(){//进度条移动
+            this.onmousemove=function(){
+                video.currentTime=this.value*video.duration/100;
+
+            }
+            this.onmouseup=function(){
+                this.onmousemove=null;
+                this.onmouseup=null;
+            }
+        });
+         btnstart.addEventListener("click",function(){
+            if(this.innerHTML=="播放"){
+            video.play();
+                 this.innerHTML="暂停";
+            }
+            else{
+                video.pause();
+                this.innerHTML="播放";
+            }
+            clearInterval(time);
+         })
+    </script>
+</body>
+</html>
